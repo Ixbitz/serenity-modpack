@@ -11,9 +11,37 @@
   "manifestType": "minecraftModpack",
   "manifestVersion": 1,
   "name": "Serenity custom",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "",
   "files": [
+    {
+      "projectID": 517272,
+      "fileID": 4409377,
+      "required": true
+    },
+    {
+      "projectID": 568645,
+      "fileID": 4257971,
+      "required": true
+    },
+    
+    {
+      "projectID": 362479,
+      "fileID": 4781750,
+      "required": true
+    },
+    
+    {
+      "projectID": 255308,
+      "fileID": 4771515,
+      "required": true
+    },
+    
+    {
+      "projectID": 659011,
+      "fileID": 4166676,
+      "required": true
+    },
     {
       "projectID": 888624,
       "fileID": 4649277,
