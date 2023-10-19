@@ -7,7 +7,7 @@ steps:
 - name: add_packages
   image: alpine:3.18
   commands:
-  - sudo apk update
+  - apk update
   - apk add zip
   - zip -h && unzip -h
 - name: zip client
