@@ -1,0 +1,10 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: zip client
+  image: alpine:3.18
+  commands:
+  - zip client.zip modlist.html manifest.json overrides/
