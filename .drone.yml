@@ -15,6 +15,3 @@ steps:
   - apk add zip
   - zip client.zip modlist.html manifest.json overrides/
   - ls
-trigger:
-  branch:
-  - master
