@@ -4,11 +4,11 @@ type: docker
 name: default
 
 steps:
-- name: verify_files
+- name: Verify
   image: alpine:3.18
   commands:
   - echo No verification step yet
-- name: zip client
+- name: Build
   image: alpine:3.18
   commands:
   - apk update
