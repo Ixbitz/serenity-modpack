@@ -4,10 +4,10 @@ type: docker
 name: default
 
 steps:
-- name: verify
+- name: verify client
   image: alpine:3.18
   commands:
-  - echo No verification step yet
+  - test -e 32.jpg && return -1
 - name: build
   image: alpine:3.18
   commands:
