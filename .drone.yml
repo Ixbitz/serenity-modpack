@@ -56,8 +56,8 @@ steps:
   - apk update
   - apk add zip
   - mkdir dist
-  - zip dist/serenity-custom_1.19.2-{{DRONE_TAG}}.zip client/modlist.html client/manifest.json client/overrides/
-  - ls
+  - zip dist/serenity-custom_1.19.2-${DRONE_TAG}.zip client/modlist.html client/manifest.json client/overrides/
+  - ls dist/
 - name: publish
   image: plugins/github-release
   settings:
@@ -81,7 +81,7 @@ steps:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        ✅ Release {{DRONE_TAG}} for {{repo.name}}/{{commit.branch}} succeeded!
+        ✅ Release ${DRONE_TAG} for {{repo.name}}/{{commit.branch}} succeeded!
       {{else}}
         ❌ Release {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
       {{/success}}
