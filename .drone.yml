@@ -13,8 +13,8 @@ steps:
   commands:
   - apk update
   - apk add zip
-  - zip client.zip modlist.html manifest.json overrides/
-  - ls
+  - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
+  - ls dist/
 - name: discord notification
   image: appleboy/drone-discord
   settings:
