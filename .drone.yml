@@ -33,6 +33,8 @@ steps:
     event:
       exclude:
         - pull_request
+        - tag
+        - promote
 trigger:
   branch:
     exclude:
@@ -79,9 +81,5 @@ steps:
         ❌ Release {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
       {{/success}}
 trigger:
-  branch:
-  - master
   event: 
-  - tag
-depends_on:
-  - build
+    - tag
