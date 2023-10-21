@@ -39,6 +39,10 @@ trigger:
   branch:
     exclude:
       - master
+  event:
+    exclude:
+      - tag
+      - promote
 
 ---
 kind: pipeline
@@ -58,7 +62,8 @@ steps:
   image: plugins/github-release
   settings:
     title: Release ${DRONE_TAG}
-    api_key: xxxxxxxx
+    api_key:
+      from_secret: github_api_key
     files: dist/*
   when:
     event:
