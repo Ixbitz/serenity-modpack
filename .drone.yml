@@ -12,6 +12,11 @@ steps:
   - mkdir dist
   - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
   - ls dist/
+- name: test
+  image: alpine:3.18
+  commands:
+  - ls
+  - ls dist/
 - name: discord notification
   image: appleboy/drone-discord
   settings:
