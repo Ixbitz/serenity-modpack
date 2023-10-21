@@ -25,7 +25,7 @@ steps:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        Build {{build.number}} for {{repo.name}} on branch {{build.branch}} succeeded. Good job.
+        ✅ Build {{build.number}} for {{repo.name}} succeeded.
       {{else}}
-        build {{build.number}} failed. Fix me please.
+        ❌ Build {{build.number}} for {{repo.name}} failed.
       {{/success}}
