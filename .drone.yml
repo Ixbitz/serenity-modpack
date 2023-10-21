@@ -49,4 +49,4 @@ trigger:
     include:
       - tag
 depends_on:
-  - build"
+  - build
