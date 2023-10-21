@@ -18,13 +18,14 @@ steps:
 - name: discord notification
   image: appleboy/drone-discord
   settings:
+    avatar_url: https://xbb.ixbitz.com/leBU8/rOKinIni70.png/raw
     webhook_id:
       from_secret: discord_id
     webhook_token:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        build {{build.number}} succeeded. Good job.
+        Build for {{repo.name}} on branch {{build.branch}} {{build.number}} succeeded. Good job.
       {{else}}
         build {{build.number}} failed. Fix me please.
       {{/success}}
