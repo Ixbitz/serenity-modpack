@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: docker
-name: default
+name: build
 
 steps:
 - name: build client
@@ -12,7 +12,11 @@ steps:
   - mkdir dist
   - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
   - ls dist/
-- name: discord notification
+- name: build server
+  image: alpine:3.18
+  commands:
+  - echo test
+- name: discord build notification
   image: appleboy/drone-discord
   settings:
     webhook_id:
@@ -21,15 +25,63 @@ steps:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        ✅ Build {{build.number}} for {{repo.name}}/{{commit.branch}} succeeded.
+        ✅ Build {{build.number}} for {{repo.name}}/{{commit.branch}} succeeded!
       {{else}}
-        ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed.
+        ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
       {{/success}}
   when:
     event:
       exclude:
-      - pull_request
+        - pull_request
+trigger:
+  branch:
+    exclude:
+      - master
+
+---
+kind: pipeline
+type: docker
+name: publish
+
+steps:
+- name: build client
+  image: alpine:3.18
+  commands:
+  - apk update
+  - apk add zip
+  - mkdir dist
+  - zip dist/serenity-custom_1.19.2-{{DRONE_TAG}}.zip client/modlist.html client/manifest.json client/overrides/
+  - ls
+- name: publish
+  image: plugins/github-release
+  settings:
+    title: Release ${DRONE_TAG}
+    api_key: xxxxxxxx
+    files: dist/*
+  when:
+    event:
+    - tag
 - name: publish release
   image: alpine:3.18
   commands:
-  - echo todo
+  - echo Releasing ${DRONE_TAG}
+- name: discord build notification
+  image: appleboy/drone-discord
+  settings:
+    webhook_id:
+      from_secret: discord_id
+    webhook_token:
+      from_secret: discord_secret
+    message: >
+      {{#success build.status}}
+        ✅ Release {{DRONE_TAG}} for {{repo.name}}/{{commit.branch}} succeeded!
+      {{else}}
+        ❌ Release {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
+      {{/success}}
+trigger:
+  branch:
+  - master
+  event: 
+  - tag
+depends_on:
+  - build
