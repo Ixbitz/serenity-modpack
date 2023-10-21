@@ -16,7 +16,7 @@ steps:
   image: alpine:3.18
   commands:
   - echo test
-- name: discord notification
+- name: discord build notification
   image: appleboy/drone-discord
   settings:
     webhook_id:
@@ -30,6 +30,9 @@ steps:
         ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed
       {{/success}}
   when:
+    branch:
+      exclude:
+      - master
     event:
       exclude:
       - pull_request
@@ -40,13 +43,31 @@ type: docker
 name: publish
 
 steps:
+- name: build client
+  image: alpine:3.18
+  commands:
+  - apk update
+  - apk add zip
+  - mkdir dist
+  - zip dist/serenity-custom_1.19.2-{{DRONE_TAG}}.zip client/modlist.html client/manifest.json client/overrides/
+  - ls
+- name: publish
+  image: plugins/github-release
+  settings:
+    title: Release ${DRONE_TAG}
+    api_key: xxxxxxxx
+    files: dist/*
+  when:
+    event:
+    - tag
 - name: publish release
   image: alpine:3.18
   commands:
   - echo Releasing ${DRONE_TAG}
 trigger:
+  branch:
+  - master
   event: 
-    include:
-      - tag
+  - tag
 depends_on:
   - build
