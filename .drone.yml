@@ -25,17 +25,18 @@ steps:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        ✅ Build {{build.number}} for {{repo.name}}/{{commit.branch}} succeeded
+        ✅ Build {{build.number}} for {{repo.name}}/{{commit.branch}} succeeded!
       {{else}}
-        ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed
+        ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
       {{/success}}
   when:
-    branch:
-      exclude:
-      - master
     event:
       exclude:
-      - pull_request
+        - pull_request
+trigger:
+  branch:
+    exclude:
+      - master
 
 ---
 kind: pipeline
@@ -64,6 +65,19 @@ steps:
   image: alpine:3.18
   commands:
   - echo Releasing ${DRONE_TAG}
+- name: discord build notification
+  image: appleboy/drone-discord
+  settings:
+    webhook_id:
+      from_secret: discord_id
+    webhook_token:
+      from_secret: discord_secret
+    message: >
+      {{#success build.status}}
+        ✅ Release {{DRONE_TAG}} for {{repo.name}}/{{commit.branch}} succeeded!
+      {{else}}
+        ❌ Release {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
+      {{/success}}
 trigger:
   branch:
   - master
