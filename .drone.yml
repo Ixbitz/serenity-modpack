@@ -4,11 +4,7 @@ type: docker
 name: default
 
 steps:
-- name: verify client
-  image: alpine:3.18
-  commands:
-  - echo nothing yet
-- name: build
+- name: build client
   image: alpine:3.18
   commands:
   - apk update
