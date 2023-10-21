@@ -15,7 +15,6 @@ steps:
 - name: discord notification
   image: appleboy/drone-discord
   settings:
-    avatar_url: https://xbb.ixbitz.com/leBU8/rOKinIni70.png/raw
     webhook_id:
       from_secret: discord_id
     webhook_token:
