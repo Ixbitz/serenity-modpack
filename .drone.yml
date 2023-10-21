@@ -13,6 +13,7 @@ steps:
   commands:
   - apk update
   - apk add zip
+  - mkdir dist
   - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
   - ls dist/
 - name: discord notification
