@@ -57,7 +57,7 @@ steps:
   - apk add zip
   - mkdir dist
   - zip dist/serenity-custom_1.19.2-${DRONE_TAG}.zip client/modlist.html client/manifest.json client/overrides/
-  - ls /dist
+  - ls dist/
 - name: publish
   image: plugins/github-release
   settings:
