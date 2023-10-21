@@ -4,28 +4,32 @@ type: docker
 name: default
 
 steps:
-- name: verify client
-  image: alpine:3.18
-  commands:
-  - echo nothing yet
-- name: build
+- name: build client
   image: alpine:3.18
   commands:
   - apk update
   - apk add zip
-  - zip client.zip modlist.html manifest.json overrides/
-  - ls
+  - mkdir dist
+  - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
+  - ls dist/
 - name: discord notification
   image: appleboy/drone-discord
   settings:
-    avatar_url: https://xbb.ixbitz.com/leBU8/rOKinIni70.png/raw
     webhook_id:
       from_secret: discord_id
     webhook_token:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        ✅ Build {{build.number}} for {{repo.name}} succeeded.
+        ✅ Build {{build.number}} for {{repo.name}}/{{commit.branch}} succeeded.
       {{else}}
-        ❌ Build {{build.number}} for {{repo.name}} failed.
+        ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed.
       {{/success}}
+  when:
+    event:
+      exclude:
+      - pull_request
+- name: publish release
+  image: alpine:3.18
+  commands:
+  - echo todo
