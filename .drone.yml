@@ -10,7 +10,7 @@ steps:
   - apk update
   - apk add zip
   - mkdir dist
-  - (cd client/ && zip ../dist/client.zip modlist.html manifest.json overrides/*)
+  - (cd client/ && zip -r ../dist/client.zip modlist.html manifest.json overrides/*)
   - ls dist/
 - name: build server
   image: alpine:3.18
@@ -64,7 +64,7 @@ steps:
   - apk update
   - apk add zip
   - mkdir dist
-  - (cd client/ && zip ../dist/serenity-custom_1.19.2-${DRONE_TAG}.zip modlist.html manifest.json overrides/*)
+  - (cd client/ && zip -r ../dist/serenity-custom_1.19.2-${DRONE_TAG}.zip modlist.html manifest.json overrides/*)
   - ls dist/
 - name: publish
   image: plugins/github-release
