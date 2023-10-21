@@ -10,7 +10,7 @@ steps:
   - apk update
   - apk add zip
   - mkdir dist
-  - zip dist/client.zip client/modlist.html client/manifest.json client/overrides/
+  - (cd client/ && zip ../dist/client.zip modlist.html manifest.json overrides/*)
   - ls dist/
 - name: build server
   image: alpine:3.18
@@ -50,13 +50,21 @@ type: docker
 name: publish
 
 steps:
+- name: discord pre-release notification
+  image: appleboy/drone-discord
+  settings:
+    webhook_id:
+      from_secret: discord_id
+    webhook_token:
+      from_secret: discord_secret
+    message: ⌛ Starting release ${DRONE_TAG} for {{repo.name}}/{{commit.branch}}
 - name: build client
   image: alpine:3.18
   commands:
   - apk update
   - apk add zip
   - mkdir dist
-  - zip dist/serenity-custom_1.19.2-${DRONE_TAG}.zip client/modlist.html client/manifest.json client/overrides/
+  - (cd client/ && zip ../dist/serenity-custom_1.19.2-${DRONE_TAG}.zip modlist.html manifest.json overrides/*)
   - ls dist/
 - name: publish
   image: plugins/github-release
@@ -68,11 +76,7 @@ steps:
   when:
     event:
     - tag
-- name: publish release
-  image: alpine:3.18
-  commands:
-  - echo Releasing ${DRONE_TAG}
-- name: discord build notification
+- name: discord release notification
   image: appleboy/drone-discord
   settings:
     webhook_id:
@@ -81,7 +85,7 @@ steps:
       from_secret: discord_secret
     message: >
       {{#success build.status}}
-        ✅ Release ${DRONE_TAG} for {{repo.name}}/{{commit.branch}} succeeded!
+        🎉 Release ${DRONE_TAG} for {{repo.name}}/{{commit.branch}} succeeded!
       {{else}}
         ❌ Release {{build.number}} for {{repo.name}}/{{commit.branch}} failed!
       {{/success}}
