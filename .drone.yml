@@ -30,3 +30,7 @@ steps:
       {{else}}
         ❌ Build {{build.number}} for {{repo.name}}/{{commit.branch}} failed.
       {{/success}}
+  trigger:
+    event:
+      exclude:
+      - pull_request
