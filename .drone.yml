@@ -29,3 +29,12 @@ steps:
     event:
       exclude:
       - pull_request
+- name: publish release
+  image: alpine:3.18
+  commands:
+  - echo todo
+  trigger:
+    event:
+      include:
+      - tag
+      - promote
